@@ -2,24 +2,9 @@
   (:require [compojure.core :refer :all]
             [liberator.core
              :refer [defresource request-method-in]]
-            [cheshire.core :refer [generate-string]]))
-
-(def exchange-rates
-  {:CHF {:EUR 0.9 :USD 1.1}})
-
-(defn get-exchange-rates
-  [base-currency]
-  (get exchange-rates base-currency))
-
-(defn calculate-currency-value
-  [{:keys [value base-currency]}]
-  (let [value (Integer/parseInt value)
-        base-currency (keyword base-currency)
-        exchange-rates (get-exchange-rates base-currency)
-        map-vals (fn [f m]
-                   (into {} (for [[k v] m]
-                              [k (f v)])))]
-    (map-vals #(* value %) exchange-rates)))
+            [cheshire.core :refer [generate-string]]
+            [currencies-api.models.exchange
+             :refer [calculate-currency-values]]))
 
 (defresource currency
   :allowed-methods [:get]
@@ -28,7 +13,7 @@
                (let [params (get-in context [:request :params])
                      currency-params (select-keys params [:value :base-currency])]
                  (generate-string
-                   (calculate-currency-value currency-params)))))
+                   (calculate-currency-values currency-params)))))
 
 (defroutes home-routes
   (ANY "/" request currency))

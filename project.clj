@@ -5,10 +5,11 @@
                  [compojure "1.1.6"]
                  [hiccup "1.0.5"]
                  [ring-server "0.3.1"]
+                 [http-kit "2.1.18"]
                  [liberator "0.13"]
                  [cheshire "5.3.1"]]
   :min-lein-version "2.0.0"
-  :main currencies-api.handler
+  :main currencies-api.main
   :plugins [[lein-ring "0.8.12"]]
   :ring {:handler currencies-api.handler/app
          :init currencies-api.handler/init

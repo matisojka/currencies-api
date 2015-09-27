@@ -1,9 +1,9 @@
-/target/classes
-/target/stale
+/target
 /lib
 /classes
 /checkouts
 pom.xml
+*.jar
 *.class
 .lein-deps-sum
 .lein-failures

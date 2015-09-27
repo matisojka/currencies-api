@@ -11,7 +11,9 @@
   :available-media-types ["application/json"]
   :handle-ok (fn [context]
                (let [params (get-in context [:request :params])
-                     currency-params (select-keys params [:value :base-currency])]
+                     currency-params
+                     (update-in
+                       (select-keys params [:value :base-currency]) [:value] #(Integer/parseInt %))]
                  (generate-string
                    (calculate-currency-values currency-params)))))
 

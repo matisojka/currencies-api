@@ -1,17 +1,19 @@
-(ns currencies-api.models.exchange)
+(ns currencies-api.models.exchange
+  (:require [cheshire.core :as json]))
 
-(def exchange-rates
-  {:CHF {:EUR 0.9 :USD 1.1}})
-
-(defn get-exchange-rates
+(defn fetch-exchange-rates
   [base-currency]
-  (get exchange-rates base-currency))
+  (let [exchange-rate-endpoint
+        (str "http://api.fixer.io/latest?base=" base-currency "&symbols=EUR,USD")]
+  (slurp exchange-rate-endpoint)))
+
+(defn exchange-rates
+  [base-currency]
+  ((json/parse-string (fetch-exchange-rates base-currency) true) :rates))
 
 (defn calculate-currency-values
   [{:keys [value base-currency]}]
-  (let [value (Integer/parseInt value)
-        base-currency (keyword base-currency)
-        exchange-rates (get-exchange-rates base-currency)
+  (let [exchange-rates (exchange-rates base-currency)
         map-vals (fn [f m]
                    (into {} (for [[k v] m]
                               [k (f v)])))]

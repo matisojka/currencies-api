@@ -7,10 +7,13 @@
                  [ring-server "0.3.1"]
                  [liberator "0.13"]
                  [cheshire "5.3.1"]]
+  :min-lein-version "2.0.0"
+  :main currencies-api.handler
   :plugins [[lein-ring "0.8.12"]]
   :ring {:handler currencies-api.handler/app
          :init currencies-api.handler/init
          :destroy currencies-api.handler/destroy}
+  :uberjar-name "currencies-api.jar"
   :profiles
   {:uberjar {:aot :all}
    :production

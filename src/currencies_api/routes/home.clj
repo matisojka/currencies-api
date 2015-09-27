@@ -13,7 +13,9 @@
                (let [params (get-in context [:request :params])
                      currency-params
                      (update-in
-                       (select-keys params [:value :base-currency]) [:value] #(Integer/parseInt %))]
+                       (select-keys
+                         params [:value :base-currency :target-currencies])
+                       [:value] #(Integer/parseInt %))]
                  (generate-string
                    (calculate-currency-values currency-params)))))
 

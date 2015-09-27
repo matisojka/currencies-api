@@ -5,14 +5,14 @@
   (:require [cheshire.core :as json]))
 
 (def mock-exchange-rates
-  {#'currencies-api.models.exchange/exchange-rates (fn [_] {:USD 1.1 :EUR 0.9})})
+  {#'currencies-api.models.exchange/exchange-rates (fn [_ _] {:USD 1.1 :EUR 0.9})})
 
 (deftest test-app
   (testing "main route"
     (let [response
           (with-redefs-fn
             mock-exchange-rates
-            #(app (request :get "/?value=5&base-currency=CHF")))
+            #(app (request :get "/?value=5&base-currency=CHF&target-currencies=EUR,USD")))
           body
           (json/parse-string (:body response) true)]
       (is (= (:status response) 200))

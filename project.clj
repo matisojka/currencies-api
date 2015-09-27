@@ -15,6 +15,7 @@
   :ring {:handler currencies-api.handler/app
          :init currencies-api.handler/init
          :destroy currencies-api.handler/destroy}
+  :uberjar-name "currencies-api.jar"
   :profiles
   {:uberjar {:aot :all}
    :production

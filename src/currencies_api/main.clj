@@ -3,7 +3,8 @@
         [org.httpkit.server :only [run-server]])
   (:gen-class))
 
-(defn -main [& [port]]
-  (let [port (if port (Integer/parseInt port) 4000)]
-    (run-server app {:port port})))
+(defn -main [&]
+  (let [port (Integer/parseInt (or (System/getenv "PORT") "4000"))]
+    (run-server app {:port port})
+    (println (str "Server started on port " port))))
 

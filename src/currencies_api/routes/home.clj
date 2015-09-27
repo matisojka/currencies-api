@@ -13,9 +13,13 @@
 
 (defn calculate-currency-value
   [{:keys [value base-currency]}]
-  (let [base-currency (keyword base-currency)
-        exchange-rates (get-exchange-rates base-currency)]
-    exchange-rates))
+  (let [value (Integer/parseInt value)
+        base-currency (keyword base-currency)
+        exchange-rates (get-exchange-rates base-currency)
+        map-vals (fn [f m]
+                   (into {} (for [[k v] m]
+                              [k (f v)])))]
+    (map-vals #(* value %) exchange-rates)))
 
 (defresource currency
   :allowed-methods [:get]
